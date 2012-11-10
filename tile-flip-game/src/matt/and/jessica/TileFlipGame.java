@@ -16,5 +16,4 @@ public class TileFlipGame extends Game {
 	public void create() {
 		setScreen(new GameScreen(PuzzleFactory.puzzles(), width, height));
 	}
-
 }

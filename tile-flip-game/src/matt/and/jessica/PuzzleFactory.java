@@ -15,11 +15,38 @@ public class PuzzleFactory {
 		puzzles.add(squarePuzzle());
 		puzzles.add(xPuzzle());
 		puzzles.add(iPuzzle());
+		puzzles.add(smilePuzzle());
 		puzzles.add(golfPuzzle());
 		puzzles.add(gemPuzzle());
 		puzzles.add(ironPuzzle());
 		puzzles.add(onePuzzle());
 		return puzzles;
+	}
+	private Puzzle smilePuzzle() {
+		int size = 5;
+		Puzzle puzzle = new Puzzle();
+		puzzle.clue = "Don't worry!";
+		puzzle.initialState = new Grid(size,size);
+		puzzle.initialState.turnOnTile(0, 0);
+		puzzle.initialState.turnOnTile(0, 1);
+		puzzle.initialState.turnOnTile(3, 1);
+		puzzle.initialState.turnOnTile(3, 2);
+		puzzle.initialState.turnOnTile(2, 1);
+		
+		puzzle.solvedState = new Grid(size,size);
+		puzzle.solvedState.turnOnTile(0, 1);
+		puzzle.solvedState.turnOnTile(1, 0);
+		puzzle.solvedState.turnOnTile(2, 0);
+		puzzle.solvedState.turnOnTile(3, 0);
+		puzzle.solvedState.turnOnTile(4, 1);
+		
+		puzzle.solvedState.turnOnTile(2, 2);
+		puzzle.solvedState.turnOnTile(1, 3);
+		puzzle.solvedState.turnOnTile(3, 3);
+		
+		puzzle.outlineSolution = true;
+		
+		return puzzle;
 	}
 
 	private Puzzle squarePuzzle() {
