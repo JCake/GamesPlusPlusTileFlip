@@ -5,13 +5,12 @@ import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.math.Intersector;
 
 public class GameScreen implements Screen, InputProcessor{
 
 	GridRenderer gridRenderer;
 	ClueRenderer clueRenderer;
+	MovesRenderer movesRenderer;
 	private Grid grid;
 	private int puzzleNumber = 0;
 	private final List<Puzzle> puzzles;
@@ -44,6 +43,7 @@ public class GameScreen implements Screen, InputProcessor{
 	public void render(float arg0) {
 		gridRenderer.render();
 		clueRenderer.render();
+		movesRenderer.render();
 	}
 	
 	private int screenHeight;
@@ -65,9 +65,15 @@ public class GameScreen implements Screen, InputProcessor{
 
 	@Override
 	public void show() {
-		grid = new Grid(puzzles.get(puzzleNumber).initialState);
-		gridRenderer = new GridRenderer(grid );
-		clueRenderer = new ClueRenderer(puzzles.get(puzzleNumber).clue);
+		movesRenderer = new MovesRenderer();
+		Puzzle puzzle = puzzles.get(puzzleNumber);
+		grid = new Grid(puzzle.initialState);
+		gridRenderer = new GridRenderer(grid);
+		gridRenderer.setSolutionOutline(null);
+		if(puzzle.outlineSolution){
+			gridRenderer.setSolutionOutline(puzzle.solvedState);
+		}
+		clueRenderer = new ClueRenderer(puzzle.clue);
 		Gdx.input.setInputProcessor(this);
 	}
 
@@ -115,13 +121,17 @@ public class GameScreen implements Screen, InputProcessor{
 		updateSelections(screenX, screenY);
 		return true;
 	}
+	
+	private int adjustWithinBounds(int min, int max, int value){
+		return Math.min(max, Math.max(min, value));
+	}
 
 	private void updateSelections(int screenX, int screenY) {
 		grid.clearSelection();
-		int startXIndex = findXIndexInGrid(startingX);
-		int startYIndex = findYIndexInGrid(startingY);
-		int endXIndex = findXIndexInGrid(screenX);
-		int endYIndex = findYIndexInGrid(screenY);
+		int startXIndex = adjustWithinBounds(0,grid.getWidth()-1,findXIndexInGrid(startingX));
+		int startYIndex = adjustWithinBounds(0,grid.getHeight()-1,findYIndexInGrid(startingY));
+		int endXIndex = adjustWithinBounds(0,grid.getWidth()-1,findXIndexInGrid(screenX));
+		int endYIndex = adjustWithinBounds(0,grid.getHeight()-1,findYIndexInGrid(screenY));
 		if(endXIndex == startXIndex){
 			int lowerY = Math.min(startYIndex, endYIndex);
 			int upperY = Math.max(startYIndex, endYIndex);
@@ -169,12 +179,16 @@ public class GameScreen implements Screen, InputProcessor{
 				Grid nextStartingState = puzzle.initialState;
 				grid = new Grid(nextStartingState);
 				gridRenderer.setGrid(grid);
+				gridRenderer.setSolutionOutline(null);
+				if(puzzle.outlineSolution){
+					gridRenderer.setSolutionOutline(puzzle.solvedState);
+				}
 				clueRenderer.setClue(puzzle.clue);
 				solvedPuzzle = false;
 				Gdx.input.setInputProcessor(this);
 				return true;
 			}else{
-				clueRenderer.setClue("You got them all!");
+				clueRenderer.setClue("You got 'em all!");
 				return false; //No more puzzles
 			}
 		}
@@ -188,6 +202,7 @@ public class GameScreen implements Screen, InputProcessor{
 				}
 			}
 		}
+		movesRenderer.moves++;
 		
 		if(puzzleSolved()){
 			//Puzzle has been solved
