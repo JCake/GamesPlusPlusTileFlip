@@ -5,7 +5,7 @@ import matt.and.jessica.Grid;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
-public class GridRenderer extends ClearableRenderer{
+public class GridRenderer extends TileFlipGameRenderer{
 	
 	private Grid grid;
 	private Grid solutionOutline;

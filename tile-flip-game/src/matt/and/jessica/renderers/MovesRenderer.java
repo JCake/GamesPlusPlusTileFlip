@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
-public class MovesRenderer extends ClearableRenderer {
+public class MovesRenderer extends TileFlipGameRenderer {
 	
 	public int moves = 0;
 	private SpriteBatch spriteBatch;
@@ -23,7 +23,7 @@ public class MovesRenderer extends ClearableRenderer {
 	public void render(){
 		shapeRenderer.begin(ShapeType.FilledRectangle);
 		shapeRenderer.setColor(Color.WHITE);
-		shapeRenderer.filledRect(0, screenHeight - 30, screenWidth, 30);
+		shapeRenderer.filledRect(0, screenHeight - screenHeight/10, screenWidth, screenHeight/10);
 		shapeRenderer.setColor(Color.BLACK);
 		shapeRenderer.end();
 		

@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
-public class ClueRenderer extends ClearableRenderer {
+public class ClueRenderer extends TileFlipGameRenderer {
 	
 	private String clue;
 	private SpriteBatch spriteBatch;

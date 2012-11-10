@@ -13,6 +13,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.GL10;
 
 public class GameScreen implements Screen, InputProcessor{
 
@@ -55,26 +56,14 @@ public class GameScreen implements Screen, InputProcessor{
 
 	@Override
 	public void render(float arg0) {
+		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT); // This cryptic line clears the screen. - thanks StackOverflow!
 		gridRenderer.render();
 		clueRenderer.render();
 		movesRenderer.render();
 	}
 	
-	@Override //FIXME hacks to get resize to work!!
+	@Override
 	public void resize(int width, int height) {
-		movesRenderer.clear();
-		gridRenderer.clear();
-		clueRenderer.clear();
-		
-		Puzzle puzzle = puzzles.get(puzzleNumber);
-		gridRenderer = new GridRenderer(grid); //start over??
-		gridRenderer.setSolutionOutline(null);
-		if(puzzle.outlineSolution){
-			gridRenderer.setSolutionOutline(puzzle.solvedState);
-		}
-		clueRenderer = new ClueRenderer(puzzle.clue);
-		Gdx.input.setInputProcessor(this);
-		System.out.println("Resizing");
 		this.screenHeight = height;
 		this.screenWidth = width;
 		movesRenderer.resize(width, height);
