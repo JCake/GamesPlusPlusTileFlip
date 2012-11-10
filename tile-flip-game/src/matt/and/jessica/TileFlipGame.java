@@ -21,6 +21,7 @@ public class TileFlipGame  extends Game {
 
 	private void addFirstPuzzle(List<Puzzle> puzzles, int size) {
 		Puzzle firstPuzzle = new Puzzle();
+		firstPuzzle.clue = "CLUE 1";
 		firstPuzzle.initialState = new Grid(size,size);
 		for(int i = 0; i < size; i++){
 			firstPuzzle.initialState.turnOnTile(i, i);
@@ -34,6 +35,7 @@ public class TileFlipGame  extends Game {
 
 	private void addSecondPuzzle(List<Puzzle> puzzles, int size) {
 		Puzzle secondPuzzle = new Puzzle();
+		secondPuzzle.clue = "CLUE 2";
 		secondPuzzle.initialState = new Grid(size,size);
 		for(int i = 0; i < size; i++){
 			secondPuzzle.initialState.turnOnTile(i, size - 1 - i);
