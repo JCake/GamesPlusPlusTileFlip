@@ -72,6 +72,15 @@ public class Grid {
 			return false;
 		return true;
 	}
+
+	public void clearSelection() {
+		for(int x = 0; x < width; x++){
+			for(int y = 0; y < height; y++){
+				tiles[x][y].isSelected = false;
+			}
+		}
+		
+	}
 	
 
 }

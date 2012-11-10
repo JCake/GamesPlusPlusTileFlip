@@ -10,33 +10,34 @@ public class TileFlipGame  extends Game {
 	@Override
 	public void create() {
 		List<Puzzle> puzzles = new ArrayList<Puzzle>();
-		int size = 4;
-		
-		addFirstPuzzle(puzzles, size);
-		addSecondPuzzle(puzzles, size);
-		addThirdPuzzle(puzzles);
-		addFourthPuzzle(puzzles);
+		puzzles.add(squarePuzzle());
+		puzzles.add(golfPuzzle());
+		puzzles.add(iPuzzle());
+		puzzles.add(ironPuzzle());
 		
 		setScreen(new GameScreen(puzzles));
 		
 	}
 
-	private void addFirstPuzzle(List<Puzzle> puzzles, int size) {
+	private Puzzle squarePuzzle() {
+		int size = 4;
 		Puzzle firstPuzzle = new Puzzle();
 		firstPuzzle.clue = "Don't be a ____";
 		firstPuzzle.initialState = new Grid(size,size);
-		for(int i = 0; i < size; i++){
-			firstPuzzle.initialState.turnOnTile(i, i);
-		}
+		firstPuzzle.initialState.turnOnTile(0, 0);
+		firstPuzzle.initialState.turnOnTile(3, 3);
+		firstPuzzle.initialState.turnOnTile(1, 2);
+		firstPuzzle.initialState.turnOnTile(2, 1);
 		firstPuzzle.solvedState = new Grid(size,size);
 		firstPuzzle.solvedState.turnOnTile(1, 1);
 		firstPuzzle.solvedState.turnOnTile(1, 2);
 		firstPuzzle.solvedState.turnOnTile(2, 1);
 		firstPuzzle.solvedState.turnOnTile(2, 2);
-		puzzles.add(firstPuzzle );
+		return firstPuzzle;
 	}
 
-	private void addSecondPuzzle(List<Puzzle> puzzles, int size) {
+	private Puzzle golfPuzzle() {
+		int size = 4;
 		Puzzle secondPuzzle = new Puzzle();
 		secondPuzzle.clue = "Fore!";
 		secondPuzzle.initialState = new Grid(size,size);
@@ -51,10 +52,10 @@ public class TileFlipGame  extends Game {
 		secondPuzzle.solvedState.turnOnTile(2, 1);
 		secondPuzzle.solvedState.turnOnTile(2, 2);
 		secondPuzzle.solvedState.turnOnTile(2, 3);
-		puzzles.add(secondPuzzle);
+		return secondPuzzle;
 	}
 	
-	private void addThirdPuzzle(List<Puzzle> puzzles) {
+	private Puzzle iPuzzle() {
 		int size = 5;
 		Puzzle puzzle = new Puzzle();
 		
@@ -71,10 +72,10 @@ public class TileFlipGame  extends Game {
 		puzzle.solvedState.turnOnTile(2, 1);
 		puzzle.solvedState.turnOnTile(2, 2);
 		puzzle.solvedState.turnOnTile(2, 4);
-		puzzles.add(puzzle);
+		return puzzle;
 	}
 	
-	private void addFourthPuzzle(List<Puzzle> puzzles) {
+	private Puzzle ironPuzzle() {
 		int size = 5;
 		Puzzle puzzle = new Puzzle();
 		
@@ -120,7 +121,7 @@ public class TileFlipGame  extends Game {
 		puzzle.solvedState.turnOnTile(4, 4);
 		puzzle.solvedState.turnOnTile(4, 2);
 		puzzle.solvedState.turnOnTile(4, 0);
-		puzzles.add(puzzle);
+		return puzzle;
 	}
 
 }
