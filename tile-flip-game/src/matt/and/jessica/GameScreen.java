@@ -8,7 +8,7 @@ import com.badlogic.gdx.Screen;
 
 public class GameScreen implements Screen, InputProcessor{
 
-	GridRenderer renderer;
+	GridRenderer gridRenderer;
 	private Grid grid;
 	private int puzzleNumber = 0;
 	private final List<Puzzle> puzzles;
@@ -39,17 +39,17 @@ public class GameScreen implements Screen, InputProcessor{
 
 	@Override
 	public void render(float arg0) {
-		renderer.render();
+		gridRenderer.render();
 	}
 	
-	int width = 300;
-	int height = 300;
-
+	private int screenHeight;
+	private int screenWidth;
+	
 	@Override
 	public void resize(int width, int height) {
-		this.width = width;
-		this.height = height;
-		renderer.resize(width, height);
+		this.screenHeight = height;
+		this.screenWidth = width;
+		gridRenderer.resize(width, height);
 		
 	}
 
@@ -62,7 +62,7 @@ public class GameScreen implements Screen, InputProcessor{
 	@Override
 	public void show() {
 		grid = new Grid(puzzles.get(puzzleNumber).initialState);
-		renderer = new GridRenderer(grid );
+		gridRenderer = new GridRenderer(grid );
 		Gdx.input.setInputProcessor(this);
 	}
 
@@ -110,22 +110,27 @@ public class GameScreen implements Screen, InputProcessor{
 	boolean readyToMove = false;
 	Tile tileToMove;
 	boolean solvedPuzzle = false;
-
+	
 	@Override
 	public boolean touchUp(int screenX, int screenY, int arg2, int arg3) {
 		
 		if(solvedPuzzle){ //Advance to next level
 			Grid nextStartingState = puzzles.get(++puzzleNumber).initialState;
 			grid = new Grid(nextStartingState);
-			renderer.setGrid(grid);
+			gridRenderer.setGrid(grid);
 			solvedPuzzle = false;
 			Gdx.input.setInputProcessor(this);
 			return true;
 			//TODO handle puzzle Number too big
 		}
-		int xIndex = screenX / (width/grid.tiles.length);
-		int yIndex = (height - screenY) / (height/grid.tiles[0].length);
+		int xIndex = findXIndexInGrid(screenX);
+		int yIndex = findYIndexInGrid(screenY);
+		
+		if(xIndex >= grid.getWidth() || yIndex >= grid.getHeight()){
+			return false;
+		}
 		System.out.println("Clicked tile: " + xIndex + "," + yIndex);
+		
 		if(!readyToMove){
 			readyToMove = true;
 			tileToMove = grid.tiles[xIndex][yIndex];
@@ -149,6 +154,14 @@ public class GameScreen implements Screen, InputProcessor{
 			solvedPuzzle = true;
 		}
 		return true;
+	}
+
+	private int findYIndexInGrid(int screenY) {
+		return (screenHeight - screenY - gridRenderer.gridRenderedY) / (gridRenderer.getHeight()/grid.tiles[0].length);
+	}
+
+	private int findXIndexInGrid(int screenX) {
+		return (screenX - gridRenderer.gridRenderedX) / (gridRenderer.getWidth()/grid.tiles.length);
 	}
 
 	private boolean puzzleSolved() {

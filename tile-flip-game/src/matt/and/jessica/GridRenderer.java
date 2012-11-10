@@ -17,17 +17,29 @@ public class GridRenderer {
 		this.grid = grid;
 	}
 	
-	int width = 300;
-	int height = 300;
+	int gridRenderedWidth = 150;
+	int gridRenderedHeight = 150;
+	int gridRenderedX = 75;
+	int gridRenderedY = 75;
 	
-	public void resize(int width, int height){
-		this.width = width;
-		this.height = height;
+	public void resize(int screenWidth, int screenHeight){
+		this.gridRenderedWidth = screenWidth / 2;
+		this.gridRenderedHeight = screenHeight / 2;
+		this.gridRenderedX = screenWidth / 4;
+		this.gridRenderedY = screenHeight / 4;
+	}
+	
+	public int getWidth(){
+		return gridRenderedWidth;
+	}
+	
+	public int getHeight(){
+		return gridRenderedHeight;
 	}
 
 	public void render(){
-		int xUnit = width / grid.getWidth();
-		int yUnit = height / grid.getHeight();
+		int xUnit = gridRenderedWidth / grid.getWidth();
+		int yUnit = gridRenderedHeight / grid.getHeight();
 //		debugRenderer.setProjectionMatrix(cam.combined);
 		renderer.begin(ShapeType.FilledRectangle);
 		for(int x = 0; x < grid.tiles.length; x++){
@@ -36,7 +48,7 @@ public class GridRenderer {
 				if(grid.tiles[x][y].isSelected){
 					renderer.setColor(Color.YELLOW);
 				}
-				renderer.filledRect(x * xUnit, y * yUnit, xUnit - 1, yUnit - 1);
+				renderer.filledRect(x * xUnit + gridRenderedX, y * yUnit + gridRenderedY, xUnit - 1, yUnit - 1);
 			}
 		}
 		renderer.end();
