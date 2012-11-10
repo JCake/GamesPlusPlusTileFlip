@@ -12,6 +12,7 @@ public class TileFlipGame  extends Game {
 		List<Puzzle> puzzles = new ArrayList<Puzzle>();
 //		puzzles.add(triforcePuzzle());
 		puzzles.add(squarePuzzle());
+		puzzles.add(xPuzzle());
 		puzzles.add(iPuzzle());
 		puzzles.add(golfPuzzle());
 		puzzles.add(gemPuzzle());
@@ -190,6 +191,21 @@ public class TileFlipGame  extends Game {
 		puzzle.solvedState.turnOnTile(1, 4);
 		
 		puzzle.outlineSolution = true;
+		return puzzle;
+	}
+	
+	private Puzzle xPuzzle(){
+		int size = 5;
+		Puzzle puzzle = new Puzzle(size, size);
+		puzzle.clue = "Marks the Spot";
+		
+		puzzle.initialState.turnOnTile(2, 2);
+		
+		for(int i = 0; i < size; i++){
+			puzzle.solvedState.turnOnTile(i, i);
+			puzzle.solvedState.turnOnTile(i, size - 1 -i);
+		}
+		
 		return puzzle;
 	}
 	
