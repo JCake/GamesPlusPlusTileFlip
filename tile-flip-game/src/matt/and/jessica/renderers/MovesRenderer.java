@@ -10,8 +10,10 @@ public class MovesRenderer extends TileFlipGameRenderer {
 	
 	public int moves = 0;
 	private SpriteBatch spriteBatch;
+	private int best;
 	
-	public MovesRenderer(){
+	public MovesRenderer(int best){
+		this.best = best;
 		spriteBatch = new SpriteBatch();
 	}
 	
@@ -32,7 +34,7 @@ public class MovesRenderer extends TileFlipGameRenderer {
 		font.setColor(Color.BLUE);
 		spriteBatch.setColor(Color.BLUE);
 		spriteBatch.begin();
-		font.draw(spriteBatch, "Moves: " + moves, 1, screenHeight - 1);
+		font.draw(spriteBatch, "Moves: " + moves + "      Best: " + best, 1, screenHeight - 1);
 		spriteBatch.end();
 	}
 

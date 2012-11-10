@@ -64,6 +64,7 @@ public class GameScreen implements Screen, InputProcessor{
 		gridRenderer.render();
 		clueRenderer.render();
 		movesRenderer.render();
+//		bestScoreRenderer.render();
 	}
 
 	private void checkBestScore() {
@@ -101,7 +102,7 @@ public class GameScreen implements Screen, InputProcessor{
 
 	@Override
 	public void show() {
-		movesRenderer = new MovesRenderer();
+		movesRenderer = new MovesRenderer(getBestScore());
 		Puzzle puzzle = puzzles.get(puzzleNumber);
 		grid = new Grid(puzzle.initialState);
 		gridRenderer = new GridRenderer(grid);
