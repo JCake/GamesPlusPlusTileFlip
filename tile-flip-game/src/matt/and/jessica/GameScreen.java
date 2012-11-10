@@ -5,6 +5,7 @@ import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 
 public class GameScreen implements Screen, InputProcessor{
 
@@ -16,6 +17,8 @@ public class GameScreen implements Screen, InputProcessor{
 	private final List<Puzzle> puzzles;
 	private int screenHeight;
 	private int screenWidth;
+	private Sound victorySound;
+	private Sound moveSound;
 	
 	public GameScreen(List<Puzzle> puzzles, int width, int height){
 		this.puzzles = puzzles;
@@ -78,6 +81,9 @@ public class GameScreen implements Screen, InputProcessor{
 		}
 		clueRenderer = new ClueRenderer(puzzle.clue);
 		Gdx.input.setInputProcessor(this);
+		
+		victorySound = Gdx.audio.newSound(Gdx.files.internal("win1.wav"));
+		moveSound = Gdx.audio.newSound(Gdx.files.internal("mouthpop.wav"));
 	}
 
 	@Override
@@ -173,6 +179,7 @@ public class GameScreen implements Screen, InputProcessor{
 	Tile tileToMove;
 	boolean solvedPuzzle = false;
 	
+	
 	@Override
 	public boolean touchUp(int screenX, int screenY, int arg2, int arg3) {
 		
@@ -205,12 +212,14 @@ public class GameScreen implements Screen, InputProcessor{
 				}
 			}
 		}
+		moveSound.play();
 		movesRenderer.moves++;
 		
 		if(puzzleSolved()){
 			//Puzzle has been solved
 			System.out.println("You win!");
 			clueRenderer.setClue("YOU GOT IT!");
+	        victorySound.play();
 			solvedPuzzle = true;
 		}
 		return true;
