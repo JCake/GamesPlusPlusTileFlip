@@ -5,10 +5,12 @@ import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL10;
 
 public class GameScreen implements Screen, InputProcessor{
 
 	GridRenderer gridRenderer;
+	ClueRenderer clueRenderer;
 	private Grid grid;
 	private int puzzleNumber = 0;
 	private final List<Puzzle> puzzles;
@@ -40,6 +42,7 @@ public class GameScreen implements Screen, InputProcessor{
 	@Override
 	public void render(float arg0) {
 		gridRenderer.render();
+		clueRenderer.render();
 	}
 	
 	private int screenHeight;
@@ -63,6 +66,7 @@ public class GameScreen implements Screen, InputProcessor{
 	public void show() {
 		grid = new Grid(puzzles.get(puzzleNumber).initialState);
 		gridRenderer = new GridRenderer(grid );
+		clueRenderer = new ClueRenderer(puzzles.get(puzzleNumber).clue);
 		Gdx.input.setInputProcessor(this);
 	}
 
@@ -115,18 +119,23 @@ public class GameScreen implements Screen, InputProcessor{
 	public boolean touchUp(int screenX, int screenY, int arg2, int arg3) {
 		
 		if(solvedPuzzle){ //Advance to next level
-			Grid nextStartingState = puzzles.get(++puzzleNumber).initialState;
-			grid = new Grid(nextStartingState);
-			gridRenderer.setGrid(grid);
-			solvedPuzzle = false;
-			Gdx.input.setInputProcessor(this);
-			return true;
-			//TODO handle puzzle Number too big
+			if(puzzleNumber < puzzles.size() - 1){
+				Puzzle puzzle = puzzles.get(++puzzleNumber);
+				Grid nextStartingState = puzzle.initialState;
+				grid = new Grid(nextStartingState);
+				gridRenderer.setGrid(grid);
+				clueRenderer.setClue(puzzle.clue);
+				solvedPuzzle = false;
+				Gdx.input.setInputProcessor(this);
+				return true;
+			}else{
+				return false; //No more puzzles
+			}
 		}
 		int xIndex = findXIndexInGrid(screenX);
 		int yIndex = findYIndexInGrid(screenY);
 		
-		if(xIndex >= grid.getWidth() || yIndex >= grid.getHeight()){
+		if(xIndex >= grid.getWidth() || yIndex >= grid.getHeight() || xIndex < 0 || yIndex < 0){
 			return false;
 		}
 		System.out.println("Clicked tile: " + xIndex + "," + yIndex);
