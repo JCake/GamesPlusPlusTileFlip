@@ -1,4 +1,4 @@
-package matt.and.jessica;
+package matt.and.jessica.renderers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -37,7 +37,7 @@ public class ClueRenderer extends ClearableRenderer {
 		font.setColor(Color.BLUE);
 		spriteBatch.setColor(Color.BLUE);
 		spriteBatch.begin();
-		font.draw(spriteBatch, clue, 0, 25);
+		font.draw(spriteBatch, clue, 1, 25);
 		spriteBatch.end();
 	}
 }

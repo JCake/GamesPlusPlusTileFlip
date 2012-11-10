@@ -1,6 +1,13 @@
-package matt.and.jessica;
+package matt.and.jessica.screens;
 
 import java.util.List;
+
+import matt.and.jessica.Grid;
+import matt.and.jessica.Puzzle;
+import matt.and.jessica.Tile;
+import matt.and.jessica.renderers.ClueRenderer;
+import matt.and.jessica.renderers.GridRenderer;
+import matt.and.jessica.renderers.MovesRenderer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
@@ -239,11 +246,11 @@ public class GameScreen implements Screen, InputProcessor{
 	}
 
 	private int findYIndexInGrid(int screenY) {
-		return (screenHeight - screenY - gridRenderer.gridRenderedY) / (gridRenderer.getHeight()/grid.tiles[0].length);
+		return (screenHeight - screenY - gridRenderer.getGridRenderedY()) / (gridRenderer.getHeight()/grid.tiles[0].length);
 	}
 
 	private int findXIndexInGrid(int screenX) {
-		return (screenX - gridRenderer.gridRenderedX) / (gridRenderer.getWidth()/grid.tiles.length);
+		return (screenX - gridRenderer.getGridRenderedX()) / (gridRenderer.getWidth()/grid.tiles.length);
 	}
 
 	private boolean puzzleSolved() {
