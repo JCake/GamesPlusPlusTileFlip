@@ -11,8 +11,8 @@ public class AndroidGame extends AndroidApplication {
         AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
         cfg.useAccelerometer = false;
         cfg.useCompass = false;
-//        cfg.useWakelock = true;
+        cfg.useWakelock = true;
         cfg.useGL20 = true;
-        initialize(new TileFlipGame(800, 480), cfg);
+        initialize(new TileFlipGame(1, 1), cfg);
 }
 }
