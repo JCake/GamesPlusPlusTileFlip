@@ -7,9 +7,13 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 public class GridRenderer {
 	
 	ShapeRenderer renderer = new ShapeRenderer();
-	private final Grid grid;
+	private Grid grid;
 	
 	public GridRenderer(Grid grid){
+		this.grid = grid;
+	}
+	
+	public void setGrid(Grid grid){
 		this.grid = grid;
 	}
 	

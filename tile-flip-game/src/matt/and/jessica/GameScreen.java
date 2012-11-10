@@ -15,6 +15,8 @@ public class GameScreen implements Screen, InputProcessor{
 	
 	public GameScreen(List<Puzzle> puzzles){
 		this.puzzles = puzzles;
+		this.puzzleNumber = 0;
+		this.solvedPuzzle = false;
 	}
 
 	@Override
@@ -107,11 +109,23 @@ public class GameScreen implements Screen, InputProcessor{
 	
 	boolean readyToMove = false;
 	Tile tileToMove;
+	boolean solvedPuzzle = false;
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int arg2, int arg3) {
+		
+		if(solvedPuzzle){ //Advance to next level
+			Grid nextStartingState = puzzles.get(++puzzleNumber).initialState;
+			grid = new Grid(nextStartingState);
+			renderer.setGrid(grid);
+			solvedPuzzle = false;
+			Gdx.input.setInputProcessor(this);
+			return true;
+			//TODO handle puzzle Number too big
+		}
 		int xIndex = screenX / (width/grid.tiles.length);
 		int yIndex = (height - screenY) / (height/grid.tiles[0].length);
+		System.out.println("Clicked tile: " + xIndex + "," + yIndex);
 		if(!readyToMove){
 			readyToMove = true;
 			tileToMove = grid.tiles[xIndex][yIndex];
@@ -132,7 +146,7 @@ public class GameScreen implements Screen, InputProcessor{
 			//Puzzle has been solved
 			System.out.println("You win!");
 			grid.displayWin();
-			//TODO go to next puzzle
+			solvedPuzzle = true;
 		}
 		return true;
 	}
