@@ -5,12 +5,12 @@ import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL10;
 
 public class GameScreen implements Screen, InputProcessor{
 
 	GridRenderer gridRenderer;
 	ClueRenderer clueRenderer;
+	MovesRenderer movesRenderer;
 	private Grid grid;
 	private int puzzleNumber = 0;
 	private final List<Puzzle> puzzles;
@@ -43,6 +43,7 @@ public class GameScreen implements Screen, InputProcessor{
 	public void render(float arg0) {
 		gridRenderer.render();
 		clueRenderer.render();
+		movesRenderer.render();
 	}
 	
 	private int screenHeight;
@@ -64,15 +65,20 @@ public class GameScreen implements Screen, InputProcessor{
 
 	@Override
 	public void show() {
-		grid = new Grid(puzzles.get(puzzleNumber).initialState);
-		gridRenderer = new GridRenderer(grid );
-		clueRenderer = new ClueRenderer(puzzles.get(puzzleNumber).clue);
+		movesRenderer = new MovesRenderer();
+		Puzzle puzzle = puzzles.get(puzzleNumber);
+		grid = new Grid(puzzle.initialState);
+		gridRenderer = new GridRenderer(grid);
+		gridRenderer.setSolutionOutline(null);
+		if(puzzle.outlineSolution){
+			gridRenderer.setSolutionOutline(puzzle.solvedState);
+		}
+		clueRenderer = new ClueRenderer(puzzle.clue);
 		Gdx.input.setInputProcessor(this);
 	}
 
 	@Override
 	public boolean keyDown(int arg0) {
-		System.out.println("key pressed");
 		return false;
 	}
 
@@ -100,15 +106,64 @@ public class GameScreen implements Screen, InputProcessor{
 		return false;
 	}
 
+	private int startingX;
+	private int startingY;
+	
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		return false;
+		startingX = screenX;
+		startingY = screenY;
+		return true;
 	}
 
 	@Override
-	public boolean touchDragged(int arg0, int arg1, int arg2) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean touchDragged(int screenX, int screenY, int arg2) {
+		updateSelections(screenX, screenY);
+		return true;
+	}
+	
+	private int adjustWithinBounds(int min, int max, int value){
+		return Math.min(max, Math.max(min, value));
+	}
+
+	private void updateSelections(int screenX, int screenY) {
+		grid.clearSelection();
+		int startXIndex = adjustWithinBounds(0,grid.getWidth()-1,findXIndexInGrid(startingX));
+		int startYIndex = adjustWithinBounds(0,grid.getHeight()-1,findYIndexInGrid(startingY));
+		int endXIndex = adjustWithinBounds(0,grid.getWidth()-1,findXIndexInGrid(screenX));
+		int endYIndex = adjustWithinBounds(0,grid.getHeight()-1,findYIndexInGrid(screenY));
+		if(endXIndex == startXIndex){
+			int lowerY = Math.min(startYIndex, endYIndex);
+			int upperY = Math.max(startYIndex, endYIndex);
+			for(int y = lowerY; y <= upperY; y++){
+				grid.tiles[endXIndex][y].isSelected = true;
+			}
+		}
+		else if(endYIndex == startYIndex){
+			int lowerX = Math.min(startXIndex, endXIndex);
+			int upperX = Math.max(startXIndex, endXIndex);
+			for(int x = lowerX; x <= upperX; x++){
+				grid.tiles[x][endYIndex].isSelected = true;
+			}
+		}else{
+			int lowerX = Math.min(startXIndex, endXIndex);
+			int lowerY = Math.min(startYIndex, endYIndex);
+			int upperY = Math.max(startYIndex, endYIndex);
+			int upperX = Math.max(startXIndex, endXIndex);
+			if(upperX-lowerX == upperY-lowerY){
+				for(int i = 0; i <= upperX-lowerX; i++){
+					if(lowerX == startXIndex && lowerY == startYIndex){
+						grid.tiles[lowerX+i][lowerY+i].isSelected = true;
+					}else if(lowerX == startXIndex && lowerY == endYIndex){
+						grid.tiles[lowerX+i][upperY-i].isSelected = true;
+					}else if(lowerX == endXIndex && lowerY == startYIndex){
+						grid.tiles[upperX-i][lowerY+i].isSelected = true;
+					}else{
+						grid.tiles[upperX-i][upperY-i].isSelected = true;
+					}
+				}
+			}
+		}
 	}
 	
 	boolean readyToMove = false;
@@ -124,42 +179,35 @@ public class GameScreen implements Screen, InputProcessor{
 				Grid nextStartingState = puzzle.initialState;
 				grid = new Grid(nextStartingState);
 				gridRenderer.setGrid(grid);
+				gridRenderer.setSolutionOutline(null);
+				if(puzzle.outlineSolution){
+					gridRenderer.setSolutionOutline(puzzle.solvedState);
+				}
 				clueRenderer.setClue(puzzle.clue);
 				solvedPuzzle = false;
 				Gdx.input.setInputProcessor(this);
 				return true;
 			}else{
+				clueRenderer.setClue("You got 'em all!");
 				return false; //No more puzzles
 			}
 		}
-		int xIndex = findXIndexInGrid(screenX);
-		int yIndex = findYIndexInGrid(screenY);
 		
-		if(xIndex >= grid.getWidth() || yIndex >= grid.getHeight() || xIndex < 0 || yIndex < 0){
-			return false;
-		}
-		System.out.println("Clicked tile: " + xIndex + "," + yIndex);
-		
-		if(!readyToMove){
-			readyToMove = true;
-			tileToMove = grid.tiles[xIndex][yIndex];
-			tileToMove.isSelected = true;
-		}else{
-			readyToMove = false;
-			tileToMove.isSelected = false;
-			if(Math.abs(xIndex - tileToMove.getX()) <= 1 && Math.abs(yIndex - tileToMove.getY()) <= 1){
-				Tile moveTo = grid.tiles[xIndex][yIndex];
-				boolean moveToDarkened = moveTo.isDarkened;
-				boolean moveFromDarkened = tileToMove.isDarkened;
-				moveTo.isDarkened = moveFromDarkened;
-				tileToMove.isDarkened = moveToDarkened;
+		updateSelections(screenX, screenY);
+		for(int x = 0; x < grid.getWidth(); x++){
+			for(int y = 0; y < grid.getHeight(); y++){
+				if(grid.tiles[x][y].isSelected){
+					grid.tiles[x][y].isDarkened = !grid.tiles[x][y].isDarkened;
+					grid.tiles[x][y].isSelected = false;
+				}
 			}
 		}
+		movesRenderer.moves++;
 		
 		if(puzzleSolved()){
 			//Puzzle has been solved
 			System.out.println("You win!");
-			grid.displayWin();
+			clueRenderer.setClue("YOU GOT IT!");
 			solvedPuzzle = true;
 		}
 		return true;
