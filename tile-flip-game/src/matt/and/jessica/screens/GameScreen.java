@@ -1,12 +1,20 @@
-package matt.and.jessica;
+package matt.and.jessica.screens;
 
 import java.util.List;
+
+import matt.and.jessica.Grid;
+import matt.and.jessica.Puzzle;
+import matt.and.jessica.Tile;
+import matt.and.jessica.renderers.ClueRenderer;
+import matt.and.jessica.renderers.GridRenderer;
+import matt.and.jessica.renderers.MovesRenderer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.GL10;
 
 public class GameScreen implements Screen, InputProcessor{
 
@@ -28,6 +36,8 @@ public class GameScreen implements Screen, InputProcessor{
 		this.solvedPuzzle = false;
 		this.screenHeight = width;
 		this.screenHeight = height;
+		prefs = Gdx.app.getPreferences("scores");
+		checkBestScore();
 	}
 
 	@Override
@@ -50,39 +60,27 @@ public class GameScreen implements Screen, InputProcessor{
 
 	@Override
 	public void render(float arg0) {
+		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT); // This cryptic line clears the screen. - thanks StackOverflow!
 		gridRenderer.render();
 		clueRenderer.render();
 		movesRenderer.render();
 	}
-	
-	@Override //FIXME hacks to get resize to work!!
-	public void resize(int width, int height) {
-		movesRenderer.clear();
-		gridRenderer.clear();
-		clueRenderer.clear();
-		
-		prefs = Gdx.app.getPreferences("scores");
+
+	private void checkBestScore() {
 		int bestScore = getBestScore();
+		System.out.println("Best score: " + bestScore);
 		if (bestScore <= 0) {
 			setBestScore(999999);
 		}
-		System.out.println("Best score is: " + bestScore);
-		
-		Puzzle puzzle = puzzles.get(puzzleNumber);
-		gridRenderer = new GridRenderer(grid); //start over??
-		gridRenderer.setSolutionOutline(null);
-		if(puzzle.outlineSolution){
-			gridRenderer.setSolutionOutline(puzzle.solvedState);
-		}
-		clueRenderer = new ClueRenderer(puzzle.clue);
-		Gdx.input.setInputProcessor(this);
-		System.out.println("Resizing");
+	}
+	
+	@Override
+	public void resize(int width, int height) {
 		this.screenHeight = height;
 		this.screenWidth = width;
 		movesRenderer.resize(width, height);
 		gridRenderer.resize(width, height);
 		clueRenderer.resize(width, height);
-		
 	}
 
 	private void setBestScore(int score) {
@@ -232,7 +230,7 @@ public class GameScreen implements Screen, InputProcessor{
 			}else{
 				int moves = movesRenderer.moves;
 				if (moves < getBestScore()) {
-					clueRenderer.setClue("NEW HIGH SCORE!");
+					clueRenderer.setClue("NEW BEST SCORE!");
 					setBestScore(moves);
 				} else {
 				clueRenderer.setClue("You got 'em all!");
@@ -264,11 +262,11 @@ public class GameScreen implements Screen, InputProcessor{
 	}
 
 	private int findYIndexInGrid(int screenY) {
-		return (screenHeight - screenY - gridRenderer.gridRenderedY) / (gridRenderer.getHeight()/grid.tiles[0].length);
+		return (screenHeight - screenY - gridRenderer.getGridRenderedY()) / (gridRenderer.getHeight()/grid.tiles[0].length);
 	}
 
 	private int findXIndexInGrid(int screenX) {
-		return (screenX - gridRenderer.gridRenderedX) / (gridRenderer.getWidth()/grid.tiles.length);
+		return (screenX - gridRenderer.getGridRenderedX()) / (gridRenderer.getWidth()/grid.tiles.length);
 	}
 
 	private boolean puzzleSolved() {

@@ -1,9 +1,11 @@
-package matt.and.jessica;
+package matt.and.jessica.renderers;
+
+import matt.and.jessica.Grid;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
-public class GridRenderer extends ClearableRenderer{
+public class GridRenderer extends TileFlipGameRenderer{
 	
 	private Grid grid;
 	private Grid solutionOutline;
@@ -25,6 +27,22 @@ public class GridRenderer extends ClearableRenderer{
 	int gridRenderedHeight;
 	int gridRenderedX;
 	int gridRenderedY;
+	
+	public int getGridRenderedX(){
+		return gridRenderedX;
+	}
+	
+	public int getGridRenderedY(){
+		return gridRenderedY;
+	}
+	
+	public int getGridRenderedWidth(){
+		return gridRenderedWidth;
+	}
+	
+	public int getGridRenderedHeight(){
+		return gridRenderedHeight;
+	}
 
 	public void resize(int screenWidth, int screenHeight){
 		this.screenWidth = screenWidth;

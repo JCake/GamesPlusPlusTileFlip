@@ -1,4 +1,4 @@
-package matt.and.jessica;
+package matt.and.jessica.renderers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -6,18 +6,13 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
-public class ClueRenderer extends ClearableRenderer {
+public class MovesRenderer extends TileFlipGameRenderer {
 	
-	private String clue;
+	public int moves = 0;
 	private SpriteBatch spriteBatch;
 	
-	public ClueRenderer(String clue){
-		this.clue = clue;
+	public MovesRenderer(){
 		spriteBatch = new SpriteBatch();
-	}
-
-	public void setClue(String clue){
-		this.clue = clue;
 	}
 	
 	public void resize(int screenWidth, int screenHeight){
@@ -28,7 +23,7 @@ public class ClueRenderer extends ClearableRenderer {
 	public void render(){
 		shapeRenderer.begin(ShapeType.FilledRectangle);
 		shapeRenderer.setColor(Color.WHITE);
-		shapeRenderer.filledRect(0, 0, screenWidth, 30);
+		shapeRenderer.filledRect(0, screenHeight - screenHeight/10, screenWidth, screenHeight/10);
 		shapeRenderer.setColor(Color.BLACK);
 		shapeRenderer.end();
 		
@@ -37,7 +32,8 @@ public class ClueRenderer extends ClearableRenderer {
 		font.setColor(Color.BLUE);
 		spriteBatch.setColor(Color.BLUE);
 		spriteBatch.begin();
-		font.draw(spriteBatch, clue, 0, 25);
+		font.draw(spriteBatch, "Moves: " + moves, 1, screenHeight - 1);
 		spriteBatch.end();
 	}
+
 }
