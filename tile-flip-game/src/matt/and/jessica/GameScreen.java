@@ -14,11 +14,15 @@ public class GameScreen implements Screen, InputProcessor{
 	private Grid grid;
 	private int puzzleNumber = 0;
 	private final List<Puzzle> puzzles;
+	private int screenHeight;
+	private int screenWidth;
 	
-	public GameScreen(List<Puzzle> puzzles){
+	public GameScreen(List<Puzzle> puzzles, int width, int height){
 		this.puzzles = puzzles;
 		this.puzzleNumber = 0;
 		this.solvedPuzzle = false;
+		this.screenHeight = width;
+		this.screenHeight = height;
 	}
 
 	@Override
@@ -46,14 +50,13 @@ public class GameScreen implements Screen, InputProcessor{
 		movesRenderer.render();
 	}
 	
-	private int screenHeight;
-	private int screenWidth;
-	
 	@Override
 	public void resize(int width, int height) {
 		this.screenHeight = height;
 		this.screenWidth = width;
 		gridRenderer.resize(width, height);
+		movesRenderer.resize(width, height);
+		clueRenderer.resize(width, height);
 		
 	}
 
