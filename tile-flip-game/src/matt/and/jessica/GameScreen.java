@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 
@@ -17,6 +18,7 @@ public class GameScreen implements Screen, InputProcessor{
 	private final List<Puzzle> puzzles;
 	private int screenHeight;
 	private int screenWidth;
+	private Preferences prefs;
 	private Sound victorySound;
 	private Sound moveSound;
 	
@@ -59,6 +61,13 @@ public class GameScreen implements Screen, InputProcessor{
 		gridRenderer.clear();
 		clueRenderer.clear();
 		
+		prefs = Gdx.app.getPreferences("scores");
+		int bestScore = getBestScore();
+		if (bestScore <= 0) {
+			setBestScore(999999);
+		}
+		System.out.println("Best score is: " + bestScore);
+		
 		Puzzle puzzle = puzzles.get(puzzleNumber);
 		gridRenderer = new GridRenderer(grid); //start over??
 		gridRenderer.setSolutionOutline(null);
@@ -74,6 +83,16 @@ public class GameScreen implements Screen, InputProcessor{
 		gridRenderer.resize(width, height);
 		clueRenderer.resize(width, height);
 		
+	}
+
+	private void setBestScore(int score) {
+		prefs.putInteger("bestscore", score);
+		prefs.flush();
+	}
+
+	private int getBestScore() {
+		int bestScore = prefs.getInteger("bestscore");
+		return bestScore;
 	}
 
 	@Override
@@ -95,7 +114,7 @@ public class GameScreen implements Screen, InputProcessor{
 		clueRenderer = new ClueRenderer(puzzle.clue);
 		Gdx.input.setInputProcessor(this);
 		
-		victorySound = Gdx.audio.newSound(Gdx.files.internal("win1.wav"));
+		victorySound = Gdx.audio.newSound(Gdx.files.internal("win1.ogg"));
 		moveSound = Gdx.audio.newSound(Gdx.files.internal("mouthpop.wav"));
 	}
 
@@ -211,7 +230,13 @@ public class GameScreen implements Screen, InputProcessor{
 				Gdx.input.setInputProcessor(this);
 				return true;
 			}else{
+				int moves = movesRenderer.moves;
+				if (moves < getBestScore()) {
+					clueRenderer.setClue("NEW HIGH SCORE!");
+					setBestScore(moves);
+				} else {
 				clueRenderer.setClue("You got 'em all!");
+				}
 				return false; //No more puzzles
 			}
 		}
