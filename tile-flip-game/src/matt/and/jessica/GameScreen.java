@@ -53,12 +53,25 @@ public class GameScreen implements Screen, InputProcessor{
 		movesRenderer.render();
 	}
 	
-	@Override
+	@Override //FIXME hacks to get resize to work!!
 	public void resize(int width, int height) {
+		movesRenderer.clear();
+		gridRenderer.clear();
+		clueRenderer.clear();
+		
+		Puzzle puzzle = puzzles.get(puzzleNumber);
+		gridRenderer = new GridRenderer(grid); //start over??
+		gridRenderer.setSolutionOutline(null);
+		if(puzzle.outlineSolution){
+			gridRenderer.setSolutionOutline(puzzle.solvedState);
+		}
+		clueRenderer = new ClueRenderer(puzzle.clue);
+		Gdx.input.setInputProcessor(this);
+		System.out.println("Resizing");
 		this.screenHeight = height;
 		this.screenWidth = width;
-		gridRenderer.resize(width, height);
 		movesRenderer.resize(width, height);
+		gridRenderer.resize(width, height);
 		clueRenderer.resize(width, height);
 		
 	}

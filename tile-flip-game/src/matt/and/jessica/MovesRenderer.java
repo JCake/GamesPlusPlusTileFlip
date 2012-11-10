@@ -4,16 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
-public class MovesRenderer {
+public class MovesRenderer extends ClearableRenderer {
 	
 	public int moves = 0;
-	ShapeRenderer shapeRenderer = new ShapeRenderer();
 	private SpriteBatch spriteBatch;
-	private int screenWidth = 300;
-	private int screenHeight = 300;
 	
 	public MovesRenderer(){
 		spriteBatch = new SpriteBatch();
