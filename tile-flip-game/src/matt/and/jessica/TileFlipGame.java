@@ -176,7 +176,7 @@ public class TileFlipGame  extends Game {
 		int width = 5;
 		Puzzle puzzle = new Puzzle();
 		
-		puzzle.clue = "A Gem";
+		puzzle.clue = "You're Number _!";
 		
 		puzzle.initialState = new Grid(width,height);
 		for(int x = 0; x < width; x++){
