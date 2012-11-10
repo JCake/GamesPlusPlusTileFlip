@@ -23,9 +23,11 @@ public class MovesRenderer extends TileFlipGameRenderer {
 	}
 	
 	public void render(){
+		super.render();
+		
 		shapeRenderer.begin(ShapeType.FilledRectangle);
 		shapeRenderer.setColor(Color.WHITE);
-		shapeRenderer.filledRect(0, screenHeight - screenHeight/10, screenWidth, screenHeight/10);
+		shapeRenderer.filledRect(0, screenHeight - screenHeight/16, screenWidth, screenHeight/16);
 		shapeRenderer.setColor(Color.BLACK);
 		shapeRenderer.end();
 		
@@ -34,7 +36,7 @@ public class MovesRenderer extends TileFlipGameRenderer {
 		font.setColor(Color.BLUE);
 		spriteBatch.setColor(Color.BLUE);
 		spriteBatch.begin();
-		font.draw(spriteBatch, "Moves: " + moves + "      Best: " + best, 1, screenHeight - 1);
+		font.draw(spriteBatch, "Moves: " + moves + "      Best: " + best, 2, screenHeight - 2);
 		spriteBatch.end();
 	}
 
