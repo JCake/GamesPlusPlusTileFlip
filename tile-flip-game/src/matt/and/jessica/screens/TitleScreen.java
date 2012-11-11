@@ -4,13 +4,18 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class TitleScreen implements Screen, InputProcessor{
 
 	private final Game game;
 	private final GameScreen gameScreen;
+	private Texture dropImage;
+	private SpriteBatch batch = new SpriteBatch();
 
 	public TitleScreen(Game game, GameScreen gameScreen){
+        dropImage = new Texture(Gdx.files.internal("flipper.png"));
 		this.game = game;
 		this.gameScreen = gameScreen;
 	}
@@ -83,8 +88,9 @@ public class TitleScreen implements Screen, InputProcessor{
 
 	@Override
 	public void render(float arg0) {
-		// TODO Auto-generated method stub
-		
+		batch.begin();
+        batch.draw(dropImage, 50, 50);
+        batch.end();		
 	}
 
 	@Override
@@ -102,6 +108,9 @@ public class TitleScreen implements Screen, InputProcessor{
 	@Override
 	public void show() {
 		Gdx.input.setInputProcessor(this);
+		batch.begin();
+        batch.draw(dropImage, 50, 50);
+        batch.end();
 	}
 
 }
