@@ -216,33 +216,24 @@ public class GameScreen implements Screen, InputProcessor{
 	public boolean touchUp(int screenX, int screenY, int arg2, int arg3) {
 		
 		if(solvedPuzzle){ //Advance to next level
-			solvedPuzzle = false;
 			if(puzzleNumber < puzzles.size() - 1){
-				Puzzle puzzle = puzzles.get(++puzzleNumber);
-				Grid nextStartingState = puzzle.initialState;
-				grid = new Grid(nextStartingState);
-				gridRenderer.setGrid(grid);
-				gridRenderer.setSolutionOutline(null);
-				if(puzzle.outlineSolution){
-					gridRenderer.setSolutionOutline(puzzle.solvedState);
-				}
-				clueRenderer.setClue(puzzle.clue);
-				Gdx.input.setInputProcessor(this);
+				advanceToNextPuzzle();
 				return true;
 			}else{
 				int moves = movesRenderer.moves;
 				if (moves < getBestScore()) {
 					clueRenderer.setClue("NEW BEST SCORE!");
 					setBestScore(moves);
-//				}else if(readyToRestart){ //restart the game
-//					readyToRestart = false;
-//					puzzleNumber = 0;
-//					show();
+				}else if(readyToRestart){ //restart the game
+					readyToRestart = false;
+					movesRenderer.moves = 0;
+					puzzleNumber = -1;
+					advanceToNextPuzzle();
 				}else {
 					clueRenderer.setClue("You got 'em all!");
 					readyToRestart = true;
 				}
-				return false; //No more puzzles
+				return true;
 			}
 		}
 		
@@ -266,6 +257,20 @@ public class GameScreen implements Screen, InputProcessor{
 			solvedPuzzle = true;
 		}
 		return true;
+	}
+
+	private void advanceToNextPuzzle() {
+		Puzzle puzzle = puzzles.get(++puzzleNumber);
+		Grid nextStartingState = puzzle.initialState;
+		grid = new Grid(nextStartingState);
+		gridRenderer.setGrid(grid);
+		gridRenderer.setSolutionOutline(null);
+		if(puzzle.outlineSolution){
+			gridRenderer.setSolutionOutline(puzzle.solvedState);
+		}
+		clueRenderer.setClue(puzzle.clue);
+		Gdx.input.setInputProcessor(this);
+		solvedPuzzle = false;
 	}
 
 	private int findYIndexInGrid(int screenY) {

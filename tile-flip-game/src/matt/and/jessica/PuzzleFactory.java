@@ -113,6 +113,7 @@ public class PuzzleFactory {
 		puzzle.solvedState.turnOnTile(2, 1);
 		puzzle.solvedState.turnOnTile(2, 2);
 		puzzle.solvedState.turnOnTile(2, 3);
+		puzzle.outlineSolution = true;
 		return puzzle;
 	}
 	

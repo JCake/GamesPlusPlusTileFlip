@@ -13,6 +13,7 @@ public class MovesRenderer extends TileFlipGameRenderer {
 	private int best;
 	
 	public MovesRenderer(int best){
+		this.moves = 0;
 		this.best = best;
 		spriteBatch = new SpriteBatch();
 	}
