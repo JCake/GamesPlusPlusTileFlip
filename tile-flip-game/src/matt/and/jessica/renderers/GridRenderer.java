@@ -47,10 +47,10 @@ public class GridRenderer extends TileFlipGameRenderer{
 	public void resize(int screenWidth, int screenHeight){
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
-		this.gridRenderedWidth = screenWidth / 2;
-		this.gridRenderedHeight = screenHeight / 2;
-		this.gridRenderedX = screenWidth / 4;
-		this.gridRenderedY = screenHeight / 4;
+		this.gridRenderedWidth = 3 * screenWidth / 4;
+		this.gridRenderedHeight = 3 * screenHeight / 4;
+		this.gridRenderedX = screenWidth / 8;
+		this.gridRenderedY = screenHeight / 8;
 		System.out.println("set dimensions to: " + gridRenderedWidth + "x" + gridRenderedHeight);
 		System.out.println("set x,y coords to: " + gridRenderedX + "," + gridRenderedY);
 	}
@@ -64,6 +64,8 @@ public class GridRenderer extends TileFlipGameRenderer{
 	}
 
 	public void render(){
+		super.render();
+		
 		float xUnit = gridRenderedWidth / grid.getWidth();
 		float yUnit = gridRenderedHeight / grid.getHeight();
 		shapeRenderer.begin(ShapeType.FilledRectangle);

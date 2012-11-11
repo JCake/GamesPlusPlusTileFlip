@@ -26,9 +26,11 @@ public class ClueRenderer extends TileFlipGameRenderer {
 	}
 	
 	public void render(){
+		super.render();
+		
 		shapeRenderer.begin(ShapeType.FilledRectangle);
 		shapeRenderer.setColor(Color.WHITE);
-		shapeRenderer.filledRect(0, 0, screenWidth, 30);
+		shapeRenderer.filledRect(0, 0, screenWidth, screenHeight/16);
 		shapeRenderer.setColor(Color.BLACK);
 		shapeRenderer.end();
 		
@@ -37,7 +39,7 @@ public class ClueRenderer extends TileFlipGameRenderer {
 		font.setColor(Color.BLUE);
 		spriteBatch.setColor(Color.BLUE);
 		spriteBatch.begin();
-		font.draw(spriteBatch, clue, 1, 25);
+		font.draw(spriteBatch, clue, 2, screenHeight/16 - 2);
 		spriteBatch.end();
 	}
 }

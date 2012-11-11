@@ -1,6 +1,7 @@
 package matt.and.jessica;
 
 import matt.and.jessica.screens.GameScreen;
+import matt.and.jessica.screens.TitleScreen;
 
 import com.badlogic.gdx.Game;
 
@@ -16,6 +17,7 @@ public class TileFlipGame extends Game {
 
 	@Override
 	public void create() {
-		setScreen(new GameScreen(PuzzleFactory.puzzles(), width, height));
+		setScreen(new TitleScreen(this,new GameScreen(PuzzleFactory.puzzles(), width, height)));
 	}
+	
 }
