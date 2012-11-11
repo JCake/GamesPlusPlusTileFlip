@@ -34,8 +34,15 @@ public class MovesRenderer extends TileFlipGameRenderer {
 		font.setColor(Color.BLUE);
 		spriteBatch.setColor(Color.BLUE);
 		spriteBatch.begin();
-		font.draw(spriteBatch, "Moves: " + moves + "      Best: " + best, 1, screenHeight - 1);
+		font.draw(spriteBatch, "Moves: " + moves + "      Best: " + displayBest(), 1, screenHeight - 1);
 		spriteBatch.end();
+	}
+
+	private String displayBest() {
+		if (best > 9999) {
+			return "";
+		}
+		return String.valueOf(best);
 	}
 
 }

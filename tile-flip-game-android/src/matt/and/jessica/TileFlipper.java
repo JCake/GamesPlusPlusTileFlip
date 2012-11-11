@@ -3,7 +3,7 @@ package matt.and.jessica;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 
-public class AndroidGame extends AndroidApplication {
+public class TileFlipper extends AndroidApplication {
 
     @Override
     public void onCreate (android.os.Bundle savedInstanceState) {
