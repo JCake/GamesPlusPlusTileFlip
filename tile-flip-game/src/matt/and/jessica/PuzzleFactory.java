@@ -95,16 +95,14 @@ public class PuzzleFactory {
 	
 	private Puzzle smilePuzzle() {
 		int size = 5;
-		Puzzle puzzle = new Puzzle();
+		Puzzle puzzle = new Puzzle(size,size);
 		puzzle.clue = "Don't worry!";
-		puzzle.initialState = new Grid(size,size);
 		puzzle.initialState.turnOnTile(0, 0);
 		puzzle.initialState.turnOnTile(0, 1);
 		puzzle.initialState.turnOnTile(3, 1);
 		puzzle.initialState.turnOnTile(3, 2);
 		puzzle.initialState.turnOnTile(2, 1);
 		
-		puzzle.solvedState = new Grid(size,size);
 		puzzle.solvedState.turnOnTile(0, 1);
 		puzzle.solvedState.turnOnTile(1, 0);
 		puzzle.solvedState.turnOnTile(2, 0);
@@ -122,33 +120,29 @@ public class PuzzleFactory {
 
 	private Puzzle squarePuzzle() {
 		int size = 4;
-		Puzzle puzzle = new Puzzle();
+		Puzzle puzzle = new Puzzle(size, size);
 		puzzle.clue = "Don't be a ______";
-		puzzle.initialState = new Grid(size,size);
 		puzzle.initialState.turnOnTile(0, 0);
 		puzzle.initialState.turnOnTile(3, 3);
 		puzzle.initialState.turnOnTile(1, 2);
 		puzzle.initialState.turnOnTile(2, 1);
-		puzzle.solvedState = new Grid(size,size);
 		puzzle.solvedState.turnOnTile(1, 1);
 		puzzle.solvedState.turnOnTile(1, 2);
 		puzzle.solvedState.turnOnTile(2, 1);
 		puzzle.solvedState.turnOnTile(2, 2);
-		
+		puzzle.outlineSolution = true;
 		return puzzle;
 	}
 
 	private Puzzle golfPuzzle() {
 		int size = 4;
-		Puzzle puzzle = new Puzzle();
+		Puzzle puzzle = new Puzzle(size,size);
 		puzzle.clue = "Fore!";
-		puzzle.initialState = new Grid(size,size);
 		puzzle.initialState.turnOnTile(0, 0);
 		puzzle.initialState.turnOnTile(1, 1);
 		puzzle.initialState.turnOnTile(2, 2);
 		puzzle.initialState.turnOnTile(1, 2);
 		puzzle.initialState.turnOnTile(2, 1);
-		puzzle.solvedState = new Grid(size,size);
 		puzzle.solvedState.turnOnTile(1, 0);
 		puzzle.solvedState.turnOnTile(2, 0);
 		puzzle.solvedState.turnOnTile(2, 1);
@@ -160,18 +154,16 @@ public class PuzzleFactory {
 	
 	private Puzzle iPuzzle() {
 		int size = 5;
-		Puzzle puzzle = new Puzzle();
-		
+		Puzzle puzzle = new Puzzle(size,size);
 		puzzle.clue = "Me, myself";
 		
-		puzzle.initialState = new Grid(size,size);
 		puzzle.initialState.turnOnTile(0, 4);
 		puzzle.initialState.turnOnTile(1, 4);
 		puzzle.initialState.turnOnTile(2, 3);
 		puzzle.initialState.turnOnTile(3, 1);
 		puzzle.initialState.turnOnTile(4, 0);
 		
-		puzzle.solvedState = new Grid(size,size);
+		//TODO make capital I?
 		puzzle.solvedState.turnOnTile(2, 0);
 		puzzle.solvedState.turnOnTile(2, 1);
 		puzzle.solvedState.turnOnTile(2, 2);
@@ -183,11 +175,10 @@ public class PuzzleFactory {
 	
 	private Puzzle ironPuzzle() {
 		int size = 5;
-		Puzzle puzzle = new Puzzle();
+		Puzzle puzzle = new Puzzle(size, size);
 		
-		puzzle.clue = "Iron";
+		puzzle.clue = "Iron's Chemical Symbol";
 		
-		puzzle.initialState = new Grid(size,size);
 		puzzle.initialState.turnOnTile(1, 0);
 		puzzle.initialState.turnOnTile(1, 2);
 		puzzle.initialState.turnOnTile(1, 4);
@@ -208,7 +199,6 @@ public class PuzzleFactory {
 		puzzle.initialState.turnOnTile(4, 3);
 		puzzle.initialState.turnOnTile(4, 4);
 		
-		puzzle.solvedState = new Grid(size,size);
 		puzzle.solvedState.turnOnTile(0, 0);
 		puzzle.solvedState.turnOnTile(0, 1);
 		puzzle.solvedState.turnOnTile(0, 2);
@@ -264,11 +254,10 @@ public class PuzzleFactory {
 	private Puzzle onePuzzle(){
 		int height = 6;
 		int width = 5;
-		Puzzle puzzle = new Puzzle();
+		Puzzle puzzle = new Puzzle(width,height);
 		
 		puzzle.clue = "You're Number _!";
 		
-		puzzle.initialState = new Grid(width,height);
 		for(int x = 0; x < width; x++){
 			puzzle.initialState.turnOnTile(x, 0);
 			puzzle.initialState.turnOnTile(x, height - 1);
@@ -278,7 +267,6 @@ public class PuzzleFactory {
 			puzzle.initialState.turnOnTile(width - 1, y);
 		}
 		
-		puzzle.solvedState = new Grid(width,height);
 		for(int x = 0; x < width; x++){
 			puzzle.solvedState.turnOnTile(x, 0);
 		}
@@ -304,17 +292,18 @@ public class PuzzleFactory {
 			puzzle.solvedState.turnOnTile(i, size - 1 -i);
 		}
 		
+		puzzle.outlineSolution = true;
+		
 		return puzzle;
 	}
 	
 	private Puzzle triforcePuzzle() {
 		int width = 9;
 		int height = 5;
-		Puzzle puzzle = new Puzzle();
+		Puzzle puzzle = new Puzzle(width, height);
 		
 		puzzle.clue = "Triforce";
 		
-		puzzle.initialState = new Grid(width,height);
 		puzzle.initialState.turnOnTile(1, 0);
 		puzzle.initialState.turnOnTile(1, 2);
 		puzzle.initialState.turnOnTile(1, 4);
@@ -335,7 +324,6 @@ public class PuzzleFactory {
 		puzzle.initialState.turnOnTile(4, 3);
 		puzzle.initialState.turnOnTile(4, 4);
 		
-		puzzle.solvedState = new Grid(width,height);
 		for(int x = 0; x < width; x++){
 			puzzle.solvedState.turnOnTile(x, 0);
 		}
@@ -347,7 +335,6 @@ public class PuzzleFactory {
 		for(int x = 2; x < width-2; x++){
 			puzzle.solvedState.turnOnTile(x, 2);
 		}
-		
 		puzzle.solvedState.turnOnTile(3, 3);
 		puzzle.solvedState.turnOnTile(4, 4);
 		puzzle.solvedState.turnOnTile(5, 3);

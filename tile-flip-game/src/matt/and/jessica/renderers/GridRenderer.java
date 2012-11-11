@@ -88,7 +88,10 @@ public class GridRenderer extends TileFlipGameRenderer{
 				for(int y = 0; y < solutionOutline.tiles[0].length; y++){
 					if(solutionOutline.tiles[x][y].isDarkened){
 						shapeRenderer.setColor(Color.RED);
-						shapeRenderer.rect(x * xUnit + gridRenderedX, y * yUnit + gridRenderedY, xUnit, yUnit);
+						shapeRenderer.rect(x * xUnit + gridRenderedX + 1, y * yUnit + gridRenderedY + 1, 
+								xUnit - 2, yUnit - 2);
+						shapeRenderer.rect(x * xUnit + gridRenderedX + 2, y * yUnit + gridRenderedY + 2, 
+								xUnit - 4, yUnit - 4);
 						
 					}
 				}
