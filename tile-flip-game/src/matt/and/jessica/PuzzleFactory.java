@@ -22,6 +22,20 @@ public class PuzzleFactory {
 		puzzles.add(onePuzzle());
 		return puzzles;
 	}
+	
+	private Puzzle stairsPuzzle() {
+		int size = 5;
+		Puzzle puzzle = new Puzzle(size,size);
+		
+		puzzle.clue = "Stairs down to the right";
+		for(int x = 0; x < size; x++){
+			puzzle.solvedState.turnOnTile(x, 0);
+			
+		}
+		
+		return puzzle;
+	}
+	
 	private Puzzle smilePuzzle() {
 		int size = 5;
 		Puzzle puzzle = new Puzzle();
