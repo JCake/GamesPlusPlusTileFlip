@@ -87,6 +87,7 @@ public class GameScreen implements Screen, InputProcessor{
 	private void setBestScore(int score) {
 		prefs.putInteger("bestscore", score);
 		prefs.flush();
+		movesRenderer.updateBest(score);
 	}
 
 	private int getBestScore() {
@@ -209,12 +210,13 @@ public class GameScreen implements Screen, InputProcessor{
 	boolean readyToMove = false;
 	Tile tileToMove;
 	boolean solvedPuzzle = false;
-	
+	boolean readyToRestart = false;
 	
 	@Override
 	public boolean touchUp(int screenX, int screenY, int arg2, int arg3) {
 		
 		if(solvedPuzzle){ //Advance to next level
+			solvedPuzzle = false;
 			if(puzzleNumber < puzzles.size() - 1){
 				Puzzle puzzle = puzzles.get(++puzzleNumber);
 				Grid nextStartingState = puzzle.initialState;
@@ -225,7 +227,6 @@ public class GameScreen implements Screen, InputProcessor{
 					gridRenderer.setSolutionOutline(puzzle.solvedState);
 				}
 				clueRenderer.setClue(puzzle.clue);
-				solvedPuzzle = false;
 				Gdx.input.setInputProcessor(this);
 				return true;
 			}else{
@@ -233,8 +234,13 @@ public class GameScreen implements Screen, InputProcessor{
 				if (moves < getBestScore()) {
 					clueRenderer.setClue("NEW BEST SCORE!");
 					setBestScore(moves);
-				} else {
-				clueRenderer.setClue("You got 'em all!");
+//				}else if(readyToRestart){ //restart the game
+//					readyToRestart = false;
+//					puzzleNumber = 0;
+//					show();
+				}else {
+					clueRenderer.setClue("You got 'em all!");
+					readyToRestart = true;
 				}
 				return false; //No more puzzles
 			}

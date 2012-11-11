@@ -17,6 +17,10 @@ public class MovesRenderer extends TileFlipGameRenderer {
 		spriteBatch = new SpriteBatch();
 	}
 	
+	public void updateBest(int newBest){
+		this.best = newBest;
+	}
+	
 	public void resize(int screenWidth, int screenHeight){
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;

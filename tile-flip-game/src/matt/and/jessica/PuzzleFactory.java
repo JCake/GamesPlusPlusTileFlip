@@ -18,6 +18,7 @@ public class PuzzleFactory {
 		puzzles.add(smilePuzzle());
 		puzzles.add(golfPuzzle());
 		puzzles.add(gemPuzzle());
+		puzzles.add(stairsPuzzle());
 		puzzles.add(ironPuzzle());
 		puzzles.add(onePuzzle());
 		return puzzles;
@@ -28,10 +29,25 @@ public class PuzzleFactory {
 		Puzzle puzzle = new Puzzle(size,size);
 		
 		puzzle.clue = "Stairs down to the right";
+		
+		puzzle.initialState.turnOnTile(2, 3);
+		puzzle.initialState.turnOnTile(2, 2);
+		puzzle.initialState.turnOnTile(2, 1);
+		puzzle.initialState.turnOnTile(3, 2);
+		puzzle.initialState.turnOnTile(1, 2);
+		
 		for(int x = 0; x < size; x++){
 			puzzle.solvedState.turnOnTile(x, 0);
-			
 		}
+		for(int x = 0; x < size - 1; x++){
+			puzzle.solvedState.turnOnTile(x, 1);
+		}
+		for(int x = 0; x < 3; x++){
+			puzzle.solvedState.turnOnTile(x, 2);
+		}
+		puzzle.solvedState.turnOnTile(0, 3);
+		puzzle.solvedState.turnOnTile(1, 3);
+		puzzle.solvedState.turnOnTile(0, 4);
 		
 		return puzzle;
 	}
