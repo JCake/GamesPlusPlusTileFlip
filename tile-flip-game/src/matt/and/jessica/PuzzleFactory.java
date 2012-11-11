@@ -15,13 +15,52 @@ public class PuzzleFactory {
 		puzzles.add(squarePuzzle());
 		puzzles.add(xPuzzle());
 		puzzles.add(iPuzzle());
-		puzzles.add(smilePuzzle());
 		puzzles.add(golfPuzzle());
+		puzzles.add(smilePuzzle());
+		puzzles.add(heartPuzzle());
 		puzzles.add(gemPuzzle());
 		puzzles.add(stairsPuzzle());
 		puzzles.add(ironPuzzle());
 		puzzles.add(onePuzzle());
 		return puzzles;
+	}
+	
+	private Puzzle heartPuzzle() {
+		int size = 5;
+		Puzzle puzzle = new Puzzle(size, size);
+		puzzle.clue = "Symbol of love";
+		
+		puzzle.initialState.turnOnTile(0, 2);
+		
+		puzzle.initialState.turnOnTile(1, 3);
+		puzzle.initialState.turnOnTile(1, 1);
+		
+		puzzle.initialState.turnOnTile(2, 0);
+		puzzle.initialState.turnOnTile(2, 4);
+		
+		puzzle.initialState.turnOnTile(3, 1);
+		puzzle.initialState.turnOnTile(3, 3);
+		
+		puzzle.initialState.turnOnTile(4, 2);
+		
+		puzzle.solvedState.turnOnTile(2, 0);
+		
+		puzzle.solvedState.turnOnTile(1, 1);
+		puzzle.solvedState.turnOnTile(3, 1);
+		
+		puzzle.solvedState.turnOnTile(0, 2);
+		puzzle.solvedState.turnOnTile(4, 2);
+		
+		puzzle.solvedState.turnOnTile(0, 3);
+		puzzle.solvedState.turnOnTile(2, 3);
+		puzzle.solvedState.turnOnTile(4, 3);
+		
+		puzzle.solvedState.turnOnTile(1, 4);
+		puzzle.solvedState.turnOnTile(3, 4);
+		
+		puzzle.outlineSolution = true;
+		
+		return puzzle;
 	}
 	
 	private Puzzle stairsPuzzle() {
@@ -48,6 +87,8 @@ public class PuzzleFactory {
 		puzzle.solvedState.turnOnTile(0, 3);
 		puzzle.solvedState.turnOnTile(1, 3);
 		puzzle.solvedState.turnOnTile(0, 4);
+		
+		puzzle.outlineSolution = true;
 		
 		return puzzle;
 	}
@@ -82,7 +123,7 @@ public class PuzzleFactory {
 	private Puzzle squarePuzzle() {
 		int size = 4;
 		Puzzle puzzle = new Puzzle();
-		puzzle.clue = "Don't be a ____";
+		puzzle.clue = "Don't be a ______";
 		puzzle.initialState = new Grid(size,size);
 		puzzle.initialState.turnOnTile(0, 0);
 		puzzle.initialState.turnOnTile(3, 3);
